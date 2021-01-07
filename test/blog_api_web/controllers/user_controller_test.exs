@@ -42,7 +42,7 @@ defmodule BlogApiWeb.UserControllerTest do
       conn = get(conn, Routes.user_path(conn, :show, id))
 
       assert %{
-               "id" => id,
+               "id" => _id,
                "display_name" => "some display_name",
                "email" => "some email",
                "image" => "some image",
@@ -66,7 +66,7 @@ defmodule BlogApiWeb.UserControllerTest do
       conn = get(conn, Routes.user_path(conn, :show, id))
 
       assert %{
-               "id" => id,
+               "id" => _id,
                "display_name" => "some updated display_name",
                "email" => "some updated email",
                "image" => "some updated image",
