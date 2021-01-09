@@ -44,11 +44,12 @@ defmodule BlogApi.UsersTest do
       assert user.display_name == "some displayName"
       assert user.email == "some@email.com"
       assert user.image == "some image"
+      assert user.password == "some password_hash"
     end
 
     test "create_user/1 with invalid data returns error changeset" do
       response = Users.create_user(@invalid_attrs)
-      assert {:bad_request, %{message: "\"email\" is required"}} = response
+      assert {:bad_request, %{message: " \"email\" and \"password\" is required"}} = response
     end
 
     test "update_user/2 with valid data updates the user" do
@@ -88,6 +89,32 @@ defmodule BlogApi.UsersTest do
         })
 
       assert {:bad_request, %{message: "\"displayName\" length must be at least 8 characters long"}} = response
+    end
+  end
+
+  describe "password validation tests" do
+    test "when password is less than 6 characters" do
+      response =
+        Users.create_user(%{
+          display_name: "some displayName",
+          email: "some@email.com",
+          image: "some image",
+          password: "12345"
+        })
+
+      assert {:bad_request, %{message: "\"password\" length must be 6 characters long"}} = response
+    end
+
+    test "when password not passed" do
+      response =
+        Users.create_user(%{
+          display_name: "some displayName",
+          email: "some@email.com",
+          image: "some image",
+          password: ""
+        })
+
+      assert {:bad_request, %{message: "\"password\" is required"}} = response
     end
   end
 

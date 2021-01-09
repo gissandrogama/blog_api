@@ -8,8 +8,8 @@ defmodule BlogApi.Users.User do
     field :display_name, :string
     field :email, :string, unique: true
     field :image, :string
-    field :password_hash, :string
     field :password, :string, virtual: true
+    field :password_hash, :string
 
     timestamps()
   end
@@ -35,7 +35,12 @@ defmodule BlogApi.Users.User do
     changeset
     |> validate_required([:password])
     |> validate_length(:password, min: 6)
+    |> hashing()
   end
 
-  
+  defp hashing(%Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset) do
+    change(changeset, Argon2.add_hash(password))
+  end
+
+  defp hashing(changeset), do: changeset
 end

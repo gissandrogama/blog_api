@@ -58,8 +58,11 @@ defmodule BlogApi.Users do
 
   defp error_messages({:error, changeset}) when changeset.valid? == false do
     changeset = changeset.errors
-    
+
     case changeset do
+      [{:password, {"can't be blank", _}}, {:email, {"can't be blank", _}}] ->
+        {:bad_request, %{message: " \"email\" and \"password\" is required"}}
+
       [{:email, {_, [constraint: :unique, constraint_name: "users_email_index"]}}] ->
         {:conflict, %{message: "Usuário já existe"}}
 
@@ -75,6 +78,16 @@ defmodule BlogApi.Users do
           [count: 8, validation: :length, kind: :min, type: :string]}}
       ] ->
         {:bad_request, %{message: "\"displayName\" length must be at least 8 characters long"}}
+
+      [{:password, {"can't be blank", [validation: :required]}}] ->
+        {:bad_request, %{message: "\"password\" is required"}}
+
+      [
+        password:
+          {"should be at least %{count} character(s)",
+           [count: 6, validation: :length, kind: :min, type: :string]}
+      ] ->
+        {:bad_request, %{message: "\"password\" length must be 6 characters long"}}
     end
   end
 
