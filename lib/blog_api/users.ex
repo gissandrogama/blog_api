@@ -58,25 +58,23 @@ defmodule BlogApi.Users do
 
   defp error_messages({:error, changeset}) when changeset.valid? == false do
     changeset = changeset.errors
-    IO.inspect(changeset)
+    
     case changeset do
       [{:email, {_, [constraint: :unique, constraint_name: "users_email_index"]}}] ->
-        error = {:conflict, %{message: "Usuário já existe"}}
-        error
+        {:conflict, %{message: "Usuário já existe"}}
 
       [{:email, {"has invalid format", [validation: :format]}}] ->
-        error = {:bad_request, %{message: "\"email\" must be a valid email"}}
-        error
+        {:bad_request, %{message: "\"email\" must be a valid email"}}
 
       [{:email, {"can't be blank", [validation: :required]}}] ->
-        error = {:bad_request, %{message: "\"email\" is required"}}
-        error
-        [
-          display_name: {"should be at least %{count} character(s)",
-           [count: 8, validation: :length, kind: :min, type: :string]}
-        ] ->
-          error = {:bad_request, %{message: "\"displayName\" length must be at least 8 characters long"}}
-          error
+        {:bad_request, %{message: "\"email\" is required"}}
+
+      [
+        {:display_name,
+         {"should be at least %{count} character(s)",
+          [count: 8, validation: :length, kind: :min, type: :string]}}
+      ] ->
+        {:bad_request, %{message: "\"displayName\" length must be at least 8 characters long"}}
     end
   end
 

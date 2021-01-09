@@ -19,14 +19,23 @@ defmodule BlogApi.Users.User do
     user
     |> cast(attrs, [:display_name, :email, :password, :image])
     |> validate_email()
+    |> validate_password()
   end
 
   defp validate_email(changeset) do
     changeset
-    |> validate_required([:display_name, :email, :password, :image])
-    |> unique_constraint(:email, name: :users_email_index)
+    |> validate_required([:email])
+    |> unique_constraint(:email)
     |> validate_length(:display_name, min: 8)
     |> validate_format(:email, ~r/^[A-Za-z0-9._%+-+']+@[A-Za-z0-9.-]+\.[A-Za-z]+$/)
     |> update_change(:email, &String.downcase/1)
   end
+
+  defp validate_password(changeset) do
+    changeset
+    |> validate_required([:password])
+    |> validate_length(:password, min: 6)
+  end
+
+  
 end
