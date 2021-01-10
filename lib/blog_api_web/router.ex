@@ -5,12 +5,22 @@ defmodule BlogApiWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :auth do
+    plug BlogApiWeb.Auth.Pipeline
+  end
+
   scope "/api", BlogApiWeb do
     pipe_through :api
 
     resources "/login", SessionController
-    resources "/users", UserController, except: [:new, :edit]
+    resources "/users", UserController, only: [:create]
   end
+
+  scope "/api", BlogApiWeb do
+    pipe_through [:api, :auth]
+    resources "/users", UserController, except: [:create]
+  end
+
 
   # Enables LiveDashboard only for development
   #
