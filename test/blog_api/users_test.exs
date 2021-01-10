@@ -2,28 +2,15 @@ defmodule BlogApi.UsersTest do
   use BlogApi.DataCase
 
   alias BlogApi.Users
+  alias BlogApi.UserFixture
 
   describe "users" do
     alias BlogApi.Users.User
 
-    @valid_attrs %{
-      display_name: "some displayName",
-      email: "some@email.com",
-      image: "some image",
-      password: "some password_hash"
-    }
-    @update_attrs %{
-      display_name: "some updated display_name",
-      email: "some_updated@email.com",
-      image: "some updated image",
-      password: "some updated password_hash"
-    }
-    @invalid_attrs %{display_name: nil, email: nil, image: nil, password_hash: nil}
-
     def user_fixture(attrs \\ %{}) do
       {:ok, user} =
         attrs
-        |> Enum.into(@valid_attrs)
+        |> Enum.into(UserFixture.valid_user)
         |> Users.create_user()
 
       user
@@ -40,7 +27,7 @@ defmodule BlogApi.UsersTest do
     end
 
     test "create_user/1 with valid data creates a user" do
-      assert {:ok, %User{} = user} = Users.create_user(@valid_attrs)
+      assert {:ok, %User{} = user} = Users.create_user(UserFixture.valid_user)
       assert user.display_name == "some displayName"
       assert user.email == "some@email.com"
       assert user.image == "some image"
@@ -48,13 +35,13 @@ defmodule BlogApi.UsersTest do
     end
 
     test "create_user/1 with invalid data returns error changeset" do
-      response = Users.create_user(@invalid_attrs)
+      response = Users.create_user(UserFixture.invalid_user)
       assert {:bad_request, %{message: " \"email\" and \"password\" is required"}} = response
     end
 
     test "update_user/2 with valid data updates the user" do
       user = user_fixture()
-      assert {:ok, %User{} = user} = Users.update_user(user, @update_attrs)
+      assert {:ok, %User{} = user} = Users.update_user(user, UserFixture.update_user)
       assert user.display_name == "some updated display_name"
       assert user.email == "some_updated@email.com"
       assert user.image == "some updated image"
@@ -62,7 +49,7 @@ defmodule BlogApi.UsersTest do
 
     test "update_user/2 with invalid data returns error changeset" do
       user = user_fixture()
-      assert {:error, %Ecto.Changeset{}} = Users.update_user(user, @invalid_attrs)
+      assert {:error, %Ecto.Changeset{}} = Users.update_user(user, UserFixture.invalid_user)
       assert user.email == Users.get_user!(user.id).email
     end
 

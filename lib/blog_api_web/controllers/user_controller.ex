@@ -12,12 +12,13 @@ defmodule BlogApiWeb.UserController do
   end
 
   def create(conn, %{"user" => user_params}) do
-    with {:ok, %User{} = user} <- Users.create_user(user_params) do
-      conn
-      |> put_status(:created)
-      |> put_resp_header("location", Routes.user_path(conn, :show, user))
-      |> render("show.json", user: user)
-    else
+    case Users.create_user(user_params) do
+      {:ok, %User{} = user} ->
+        conn
+        |> put_status(:created)
+        |> put_resp_header("location", Routes.user_path(conn, :show, user))
+        |> render("show.json", user: user)
+
       {status, message} ->
         conn
         |> put_status(status)
