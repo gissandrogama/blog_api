@@ -39,7 +39,8 @@ defmodule BlogApiWeb.UserController do
     end
   end
 
-  def delete(conn, %{"id" => id}) do
+  def delete(conn, _params) do
+    id = Guardian.Plug.current_resource(conn).id
     user = Users.get_user!(id)
 
     with {:ok, %User{}} <- Users.delete_user(user) do

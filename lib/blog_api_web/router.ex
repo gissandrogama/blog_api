@@ -20,6 +20,7 @@ defmodule BlogApiWeb.Router do
     pipe_through [:api, :auth]
     resources "/post", PostController
     resources "/user", UserController, except: [:create]
+    delete "/user/me", UserController, :delete
   end
 
 

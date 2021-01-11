@@ -24,12 +24,12 @@ defmodule BlogApi.Posts.Post do
   end
 
   defp validate_title(changeset) do
-    changeset
-    |> validate_required([:title], message: "\"title\" is required")
+    IO.inspect(changeset)
+    |> validate_required([:title])
   end
 
   defp validate_content(changeset) do
-    changeset
-    |> validate_required([:content], message: "\"content\" is required")
+    IO.inspect(changeset)
+    |> validate_required([:content])
   end
 end

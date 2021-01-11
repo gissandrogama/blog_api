@@ -53,7 +53,22 @@ defmodule BlogApi.Posts do
     %Post{}
     |> Post.changeset(attrs)
     |> Repo.insert()
+    |> error_messages()
   end
+
+  def error_messages({:error, changeset}) when changeset.valid? == false do
+    changeset = changeset.errors
+
+    case changeset do
+      [{:title, {"can't be blank", [validation: :required]}}] ->
+        {:bad_request, %{message: "\"title\" is required"}}
+
+      [{:content, {"can't be blank", [validation: :required]}}] ->
+        {:bad_request, %{message: "\"content\" is required"}}
+    end
+  end
+
+  def error_messages(changeset), do: changeset
 
   @doc """
   Updates a post.
