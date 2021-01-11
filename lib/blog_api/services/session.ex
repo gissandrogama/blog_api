@@ -5,13 +5,13 @@ defmodule BlogApi.Services.Session do
   def authenticate(email, password) do
     case Repo.get_by(User, email: email) do
       nil ->
-        {:error, :not_found}
+        {:error, "Campos inválidos"}
 
       user ->
         if Argon2.verify_pass(password, user.password_hash) do
           {:ok, user}
         else
-          {:error, :unauthorized}
+          {:error, "password inválido"}
         end
     end
   end

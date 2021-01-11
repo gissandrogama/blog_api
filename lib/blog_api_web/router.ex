@@ -13,12 +13,13 @@ defmodule BlogApiWeb.Router do
     pipe_through :api
 
     resources "/login", SessionController
-    resources "/users", UserController, only: [:create]
+    resources "/user", UserController, only: [:create]
   end
 
   scope "/api", BlogApiWeb do
     pipe_through [:api, :auth]
-    resources "/users", UserController, except: [:create]
+    resources "/post", PostController
+    resources "/user", UserController, except: [:create]
   end
 
 

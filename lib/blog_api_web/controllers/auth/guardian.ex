@@ -13,15 +13,43 @@ defmodule BlogApiWeb.Auth.Guardian do
     {:ok, user}
   end
 
-  def authenticate(email, password) do
-    case Session.authenticate(email, password) do
-      {:ok, user} ->
-        create_token(user)
+  def authenticate(params) do
+    params
+    |> case do
+      %{"password" => _} ->
+        _authenticate(params)
+
+      %{"email" => _} ->
+        _authenticate(params)
 
       _ ->
-        {:error, :unauthorized}
+        cond do
+          params["email"] == "" ->
+            {:error, "\"email\" is not allowed to be empty"}
+
+          params["password"] == "" ->
+            {:error, "\"password\" is not allowed to be empty"}
+
+          true ->
+            case Session.authenticate(params["email"], params["password"]) do
+              {:ok, user} ->
+                create_token(user)
+
+              {:error, message} ->
+                {:error, message}
+            end
+        end
     end
   end
+
+  def _authenticate(params) do
+    case params do
+      %{"email" => _} -> {:error, "\"password\" is required"}
+      %{"password" => _} -> {:error, "\"email\" is required"}
+    end
+  end
+
+  def is_email(email), do: Regex.match?(~r/@/, email) == true
 
   defp create_token(user) do
     {:ok, token, _claim} = encode_and_sign(user)

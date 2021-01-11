@@ -1,6 +1,7 @@
 defmodule BlogApi.Users.User do
   use Ecto.Schema
   import Ecto.Changeset
+  alias BlogApi.Posts.Post
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
@@ -10,6 +11,7 @@ defmodule BlogApi.Users.User do
     field :image, :string
     field :password, :string, virtual: true
     field :password_hash, :string
+    has_many :posts, Post
 
     timestamps()
   end
