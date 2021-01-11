@@ -2,8 +2,6 @@ defmodule BlogApiWeb.Auth.ErrorHandler do
   use BlogApiWeb, :controller
 
   def auth_error(conn, {type, _reason}, _opts) do
-    IO.inspect(type)
-
     case type do
       :invalid_token ->
         conn

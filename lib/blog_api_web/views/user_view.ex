@@ -12,7 +12,6 @@ defmodule BlogApiWeb.UserView do
 
   def render("user.json", %{user: user}) do
     %{
-      id: user.id,
       displayName: user.display_name,
       email: user.email,
       image: user.image
