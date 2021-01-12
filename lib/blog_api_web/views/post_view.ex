@@ -7,8 +7,13 @@ defmodule BlogApiWeb.PostView do
   end
 
   def render("show.json", %{post: post}) do
+    render_one(post, PostView, "posts.json")
+  end
+
+  def render("create_show.json", %{post: post}) do
     render_one(post, PostView, "post.json")
   end
+
 
   def render("post.json", %{post: post}) do
     %{

@@ -22,8 +22,7 @@ defmodule BlogApiWeb.PostController do
       {:ok, %Post{} = post} ->
         conn
         |> put_status(:created)
-        |> put_resp_header("location", Routes.post_path(conn, :show, post))
-        |> render("show.json", post: post)
+        |> render("create_show.json", post: post)
 
       {status, message} ->
         conn
@@ -33,7 +32,7 @@ defmodule BlogApiWeb.PostController do
   end
 
   def show(conn, %{"id" => id}) do
-    post = Posts.get_post!(id)
+    post = Posts.get_post!(id) |> BlogApi.Repo.preload(:user)
     render(conn, "show.json", post: post)
   end
 
