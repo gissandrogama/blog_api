@@ -7,7 +7,7 @@ defmodule BlogApi.MixProject do
     [
       app: :blog_api,
       version: "0.1.0",
-      elixir: "~> 1.7",
+      elixir: "~> 1.10",
       description: "Projeto API de blog para o teste tecnico da trybe",
       source_url: @github_url,
       homepage_url: @github_url,
