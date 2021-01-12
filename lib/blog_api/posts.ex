@@ -115,6 +115,9 @@ defmodule BlogApi.Posts do
     changeset = changeset.errors
 
     case changeset do
+      [{:content, {"can't be blank", _}}, {:title, {"can't be blank", _}}] ->
+        {:bad_request, %{message: " \"title\" and \"content\" is required"}}
+
       [{:title, {"can't be blank", [validation: :required]}}] ->
         {:bad_request, %{message: "\"title\" is required"}}
 

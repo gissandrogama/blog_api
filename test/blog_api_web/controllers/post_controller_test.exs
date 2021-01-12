@@ -1,8 +1,12 @@
 defmodule BlogApiWeb.PostControllerTest do
   use BlogApiWeb.ConnCase
 
+  import BlogApiWeb.Auth.Guardian
+
   alias BlogApi.Posts
   alias BlogApi.Posts.Post
+  alias BlogApi.Users
+  alias BlogApi.UserFixture
 
   @create_attrs %{
     content: "some content",
@@ -19,21 +23,34 @@ defmodule BlogApiWeb.PostControllerTest do
     post
   end
 
+  def user_fixture(:user) do
+    {:ok, user} = Users.create_user(UserFixture.valid_user())
+    user
+  end
+
   setup %{conn: conn} do
-    {:ok, conn: put_req_header(conn, "accept", "application/json")}
+    user = user_fixture(:user)
+    {:ok, token, _} = encode_and_sign(user, %{}, token_type: :access)
+
+    conn =
+      conn
+      |> put_req_header("accept", "application/json")
+      |> put_req_header("authorization", "bearer " <> token)
+
+    {:ok, conn: conn}
   end
 
   describe "index" do
     test "lists all posts", %{conn: conn} do
       conn = get(conn, Routes.post_path(conn, :index))
-      assert json_response(conn, 200)["data"] == []
+      assert json_response(conn, 200) == []
     end
   end
 
   describe "create post" do
     test "renders post when data is valid", %{conn: conn} do
       conn = post(conn, Routes.post_path(conn, :create), post: @create_attrs)
-      assert %{"id" => id} = json_response(conn, 201)["data"]
+      assert %{"id" => id} = json_response(conn, 201)
 
       conn = get(conn, Routes.post_path(conn, :show, id))
 
@@ -41,7 +58,7 @@ defmodule BlogApiWeb.PostControllerTest do
                "id" => id,
                "content" => "some content",
                "title" => "some title"
-             } = json_response(conn, 200)["data"]
+             } = json_response(conn, 200)
     end
 
     test "renders errors when data is invalid", %{conn: conn} do

@@ -36,7 +36,8 @@ defmodule BlogApi.PostsTest do
     end
 
     test "create_post/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Posts.create_post(@invalid_attrs)
+      response = Posts.create_post(@invalid_attrs)
+      assert {:bad_request, %{message: " \"title\" and \"content\" is required"}} = response
     end
 
     test "update_post/2 with valid data updates the post" do
