@@ -5,16 +5,16 @@ defmodule BlogApi.UserFixture do
 
   alias BlogApi.Users
 
-  def displayName(), do: "some displayName"
-  def email(), do: "some#{:random.uniform()}@email.com"
-  def image(), do: "some image"
-  def password(), do: "123456"
+  def display_name, do: "some displayName"
+  def email, do: "some#{:random.uniform()}@email.com"
+  def image, do: "some image"
+  def password, do: "123456"
 
   def user_fixture(attrs \\ %{}) do
     {:ok, user} =
       attrs
       |> Enum.into(%{
-        display_name: displayName(),
+        display_name: display_name(),
         email: email(),
         image: image(),
         password: password()

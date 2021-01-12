@@ -26,7 +26,7 @@ defmodule BlogApiWeb.UserControllerTest do
   }
 
   setup %{conn: conn} do
-   user = user_fixture(%{email: "fulanosilva@email.com"})
+    user = user_fixture(%{email: "fulanosilva@email.com"})
     {:ok, token, _} = encode_and_sign(user, %{}, token_type: :access)
 
     conn =

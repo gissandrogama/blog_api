@@ -67,7 +67,10 @@ defmodule BlogApi.UsersTest do
 
     test "update_user/2 with invalid data returns error changeset" do
       user = user_fixture()
-      assert {:bad_request, %{message: " \"email\" and \"password\" is required"}} = Users.update_user(user, @invalid_user)
+
+      assert {:bad_request, %{message: " \"email\" and \"password\" is required"}} =
+               Users.update_user(user, @invalid_user)
+
       assert user.email == Users.get_user!(user.id).email
     end
 

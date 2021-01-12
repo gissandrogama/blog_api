@@ -3,19 +3,10 @@ defmodule BlogApi.Users.Services.SessionTest do
 
   alias BlogApi.{Services.Session, UserFixture, Users}
 
-  def user_fixture(attrs \\ %{}) do
-    {:ok, user} =
-      attrs
-      |> Enum.into(UserFixture.valid_user())
-      |> Users.create_user()
-
-    user
-  end
-
   test "authenticate/2 should return user" do
-    user_fixture()
-    {:ok, user_authenticate} = Session.authenticate("some@email.com", "some password_hash")
-    assert "some@email.com" == user_authenticate.email
+    user = UserFixture.user_fixture(%{email: "teste@email.com", password: "123123"})
+    {:ok, user_authenticate} = Session.authenticate("teste@email.com", "123123")
+    assert "teste@email.com" == user_authenticate.email
   end
 
   test "authenticate/2 should return not_found" do
