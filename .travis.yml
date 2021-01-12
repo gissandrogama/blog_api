@@ -12,6 +12,6 @@ services:
 
 script:
   - mix format --check-formatted --dry-run
-  - mix credo --strickt
+  - mix credo --strict
   - mix sobelow --config
   - mix coveralls.travis
