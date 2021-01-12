@@ -6,7 +6,7 @@ defmodule BlogApi.UserFixture do
   alias BlogApi.Users
 
   def displayName(), do: "some displayName"
-  def email(), do: "some#{System.unique_integer()}@email.com"
+  def email(), do: "some#{:random.uniform()}@email.com"
   def image(), do: "some image"
   def password(), do: "123456"
 

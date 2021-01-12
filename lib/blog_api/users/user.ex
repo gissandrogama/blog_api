@@ -23,6 +23,7 @@ defmodule BlogApi.Users.User do
   def changeset(user, attrs) do
     user
     |> cast(attrs, [:display_name, :email, :password, :image])
+    |> validate_length(:display_name, min: 8)
     |> validate_email()
     |> validate_password()
   end
@@ -31,7 +32,6 @@ defmodule BlogApi.Users.User do
     changeset
     |> validate_required([:email])
     |> unique_constraint(:email)
-    |> validate_length(:display_name, min: 8)
     |> validate_format(:email, ~r/^[A-Za-z0-9._%+-+']+@[A-Za-z0-9.-]+\.[A-Za-z]+$/)
     |> update_change(:email, &String.downcase/1)
   end
