@@ -1,6 +1,7 @@
 defmodule BlogApi.Posts.Post do
   use Ecto.Schema
   import Ecto.Changeset
+  import Ecto.Query, only: [from: 2]
 
   alias BlogApi.Users.User
 
@@ -24,12 +25,19 @@ defmodule BlogApi.Posts.Post do
   end
 
   defp validate_title(changeset) do
-    IO.inspect(changeset)
+    changeset
     |> validate_required([:title])
   end
 
   defp validate_content(changeset) do
-    IO.inspect(changeset)
+    changeset
     |> validate_required([:content])
+  end
+
+  def search(query, search_term) do
+    post_search = "%#{search_term}%"
+
+    from post in query,
+    where: ilike(post.title, ^post_search)
   end
 end

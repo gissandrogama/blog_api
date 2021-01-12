@@ -21,6 +21,7 @@ defmodule BlogApiWeb.Router do
     resources "/post", PostController
     resources "/user", UserController, except: [:create]
     delete "/user/me", UserController, :delete
+    get "/search", SearchController, :show
   end
 
 

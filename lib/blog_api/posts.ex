@@ -21,6 +21,14 @@ defmodule BlogApi.Posts do
     Repo.all(Post)
   end
 
+  def list_search(params) do
+    search_term = get_in(params, ["q"])
+
+    Post
+    |> Post.search(search_term)
+    |> Repo.all()
+  end
+
   @doc """
   Gets a single post.
 
@@ -56,30 +64,16 @@ defmodule BlogApi.Posts do
     |> error_messages()
   end
 
-  def error_messages({:error, changeset}) when changeset.valid? == false do
-    changeset = changeset.errors
-
-    case changeset do
-      [{:title, {"can't be blank", [validation: :required]}}] ->
-        {:bad_request, %{message: "\"title\" is required"}}
-
-      [{:content, {"can't be blank", [validation: :required]}}] ->
-        {:bad_request, %{message: "\"content\" is required"}}
-    end
-  end
-
-  def error_messages(changeset), do: changeset
-
   @doc """
   Updates a post.
 
   ## Examples
 
-      iex> update_post(post, %{field: new_value})
-      {:ok, %Post{}}
+  iex> update_post(post, %{field: new_value})
+  {:ok, %Post{}}
 
-      iex> update_post(post, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
+  iex> update_post(post, %{field: bad_value})
+  {:error, %Ecto.Changeset{}}
 
   """
   def update_post(%Post{} = post, attrs) do
@@ -93,11 +87,11 @@ defmodule BlogApi.Posts do
 
   ## Examples
 
-      iex> delete_post(post)
-      {:ok, %Post{}}
+  iex> delete_post(post)
+  {:ok, %Post{}}
 
-      iex> delete_post(post)
-      {:error, %Ecto.Changeset{}}
+  iex> delete_post(post)
+  {:error, %Ecto.Changeset{}}
 
   """
   def delete_post(%Post{} = post) do
@@ -109,11 +103,25 @@ defmodule BlogApi.Posts do
 
   ## Examples
 
-      iex> change_post(post)
-      %Ecto.Changeset{data: %Post{}}
+  iex> change_post(post)
+  %Ecto.Changeset{data: %Post{}}
 
   """
   def change_post(%Post{} = post, attrs \\ %{}) do
     Post.changeset(post, attrs)
   end
+
+  defp error_messages({:error, changeset}) when changeset.valid? == false do
+    changeset = changeset.errors
+
+    case changeset do
+      [{:title, {"can't be blank", [validation: :required]}}] ->
+        {:bad_request, %{message: "\"title\" is required"}}
+
+      [{:content, {"can't be blank", [validation: :required]}}] ->
+        {:bad_request, %{message: "\"content\" is required"}}
+    end
+  end
+
+  defp error_messages(changeset), do: changeset
 end
