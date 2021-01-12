@@ -1,4 +1,7 @@
 defmodule BlogApi.Users.User do
+  @moduledoc """
+  module that has user parameter validation function.
+  """
   use Ecto.Schema
   import Ecto.Changeset
   alias BlogApi.Posts.Post

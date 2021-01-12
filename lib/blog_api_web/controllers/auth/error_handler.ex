@@ -1,4 +1,7 @@
 defmodule BlogApiWeb.Auth.ErrorHandler do
+  @moduledoc """
+  this model has functions that return guardian errors
+  """
   use BlogApiWeb, :controller
 
   def auth_error(conn, {type, _reason}, _opts) do

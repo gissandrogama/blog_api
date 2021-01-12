@@ -3,8 +3,7 @@ defmodule BlogApiWeb.SessionControllerTest do
 
   import BlogApiWeb.Auth.Guardian
 
-  alias BlogApi.Users
-  alias BlogApi.UserFixture
+  alias BlogApi.{UserFixture, Users}
 
   def fixture(:user) do
     {:ok, user} = Users.create_user(UserFixture.valid_user())
@@ -34,7 +33,6 @@ defmodule BlogApiWeb.SessionControllerTest do
 
       assert %{"token" => _} = json_response(conn, 200)
     end
-
 
     test "should not authenticate with invalid user", %{conn: conn} do
       conn =

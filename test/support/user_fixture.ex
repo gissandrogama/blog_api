@@ -1,4 +1,7 @@
 defmodule BlogApi.UserFixture do
+  @moduledoc """
+  module that has simple functions to generate test parameters that need a user
+  """
   def valid_user,
     do: %{
       display_name: "some displayName",

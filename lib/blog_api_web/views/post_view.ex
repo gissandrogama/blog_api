@@ -14,7 +14,6 @@ defmodule BlogApiWeb.PostView do
     render_one(post, PostView, "post.json")
   end
 
-
   def render("post.json", %{post: post}) do
     %{
       UserId: post.user_id,

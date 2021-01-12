@@ -1,10 +1,13 @@
 defmodule BlogApiWeb.Auth.Pipeline do
+  @moduledoc """
+  Module of pipeline guardian
+  """
   alias BlogApiWeb.Auth
 
   use Guardian.Plug.Pipeline,
-  otp_app: :blog_api,
-  module: Auth.Guardian,
-  error_handler: Auth.ErrorHandler
+    otp_app: :blog_api,
+    module: Auth.Guardian,
+    error_handler: Auth.ErrorHandler
 
   plug Guardian.Plug.VerifySession, claims: %{"typ" => "access"}
   plug Guardian.Plug.VerifyHeader, claims: %{"typ" => "access"}

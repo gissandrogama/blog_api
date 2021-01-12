@@ -1,9 +1,7 @@
 defmodule BlogApi.Users.Services.SessionTest do
   use BlogApi.DataCase
 
-  alias BlogApi.Users
-  alias BlogApi.UserFixture
-  alias BlogApi.Services.Session
+  alias BlogApi.{Services.Session, UserFixture, Users}
 
   def user_fixture(attrs \\ %{}) do
     {:ok, user} =

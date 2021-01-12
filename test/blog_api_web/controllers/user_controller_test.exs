@@ -3,9 +3,7 @@ defmodule BlogApiWeb.UserControllerTest do
 
   import BlogApiWeb.Auth.Guardian
 
-  alias BlogApi.Users
-  alias BlogApi.Users.User
-  alias BlogApi.UserFixture
+  alias BlogApi.{UserFixture, Users, Users.User}
 
   def fixture(:user) do
     {:ok, user} = Users.create_user(UserFixture.valid_user())

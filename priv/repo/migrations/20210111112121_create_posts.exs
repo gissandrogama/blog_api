@@ -6,7 +6,9 @@ defmodule BlogApi.Repo.Migrations.CreatePosts do
       add :id, :binary_id, primary_key: true
       add :title, :string
       add :content, :text
-      add :user_id, references(:users, on_delete: :nilify_all, on_update: :nilify_all, type: :binary_id)
+
+      add :user_id,
+          references(:users, on_delete: :nilify_all, on_update: :nilify_all, type: :binary_id)
 
       timestamps()
     end

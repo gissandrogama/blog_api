@@ -9,5 +9,4 @@ defmodule BlogApiWeb.SearchController do
     posts = Posts.list_search(params) |> BlogApi.Repo.preload(:user)
     render(conn, "show.json", posts: posts)
   end
-
 end

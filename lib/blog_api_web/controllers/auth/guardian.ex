@@ -1,4 +1,7 @@
 defmodule BlogApiWeb.Auth.Guardian do
+  @moduledoc """
+  has functions that authenticate a user and generate token
+  """
   use Guardian, otp_app: :blog_api
 
   alias BlogApi.Services.Session
@@ -22,7 +25,6 @@ defmodule BlogApiWeb.Auth.Guardian do
         {:error, message}
     end
   end
-
 
   defp create_token(user) do
     {:ok, token, _claim} = encode_and_sign(user)

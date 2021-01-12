@@ -1,8 +1,7 @@
 defmodule BlogApi.UsersTest do
   use BlogApi.DataCase
 
-  alias BlogApi.Users
-  alias BlogApi.UserFixture
+  alias BlogApi.{UserFixture, Users}
 
   describe "users" do
     alias BlogApi.Users.User
@@ -10,7 +9,7 @@ defmodule BlogApi.UsersTest do
     def user_fixture(attrs \\ %{}) do
       {:ok, user} =
         attrs
-        |> Enum.into(UserFixture.valid_user)
+        |> Enum.into(UserFixture.valid_user())
         |> Users.create_user()
 
       user
@@ -27,7 +26,7 @@ defmodule BlogApi.UsersTest do
     end
 
     test "create_user/1 with valid data creates a user" do
-      assert {:ok, %User{} = user} = Users.create_user(UserFixture.valid_user)
+      assert {:ok, %User{} = user} = Users.create_user(UserFixture.valid_user())
       assert user.display_name == "some displayName"
       assert user.email == "some@email.com"
       assert user.image == "some image"
@@ -35,13 +34,13 @@ defmodule BlogApi.UsersTest do
     end
 
     test "create_user/1 with invalid data returns error changeset" do
-      response = Users.create_user(UserFixture.invalid_user)
+      response = Users.create_user(UserFixture.invalid_user())
       assert {:bad_request, %{message: " \"email\" and \"password\" is required"}} = response
     end
 
     test "update_user/2 with valid data updates the user" do
       user = user_fixture()
-      assert {:ok, %User{} = user} = Users.update_user(user, UserFixture.update_user)
+      assert {:ok, %User{} = user} = Users.update_user(user, UserFixture.update_user())
       assert user.display_name == "some updated display_name"
       assert user.email == "some_updated@email.com"
       assert user.image == "some updated image"
@@ -49,7 +48,7 @@ defmodule BlogApi.UsersTest do
 
     test "update_user/2 with invalid data returns error changeset" do
       user = user_fixture()
-      assert {:error, %Ecto.Changeset{}} = Users.update_user(user, UserFixture.invalid_user)
+      assert {:error, %Ecto.Changeset{}} = Users.update_user(user, UserFixture.invalid_user())
       assert user.email == Users.get_user!(user.id).email
     end
 
@@ -75,7 +74,8 @@ defmodule BlogApi.UsersTest do
           password: "some password_hash"
         })
 
-      assert {:bad_request, %{message: "\"displayName\" length must be at least 8 characters long"}} = response
+      assert {:bad_request,
+              %{message: "\"displayName\" length must be at least 8 characters long"}} = response
     end
   end
 
@@ -89,7 +89,8 @@ defmodule BlogApi.UsersTest do
           password: "12345"
         })
 
-      assert {:bad_request, %{message: "\"password\" length must be 6 characters long"}} = response
+      assert {:bad_request, %{message: "\"password\" length must be 6 characters long"}} =
+               response
     end
 
     test "when password not passed" do

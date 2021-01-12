@@ -24,7 +24,6 @@ defmodule BlogApiWeb.Router do
     get "/search", SearchController, :show
   end
 
-
   # Enables LiveDashboard only for development
   #
   # If you want to use the LiveDashboard in production, you should put

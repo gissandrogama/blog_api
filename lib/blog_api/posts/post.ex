@@ -1,4 +1,8 @@
 defmodule BlogApi.Posts.Post do
+  @moduledoc """
+  module that has functions for parameter validation and function to search
+  post by title and content.
+  """
   use Ecto.Schema
   import Ecto.Changeset
   import Ecto.Query, only: [from: 2]
@@ -38,7 +42,7 @@ defmodule BlogApi.Posts.Post do
     post_search = "%#{search_term}%"
 
     from post in query,
-    where: ilike(post.title, ^post_search),
-    or_where: ilike(post.content, ^post_search)
+      where: ilike(post.title, ^post_search),
+      or_where: ilike(post.content, ^post_search)
   end
 end
