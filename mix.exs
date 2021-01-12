@@ -10,7 +10,15 @@ defmodule BlogApi.MixProject do
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      test_coverage: [tool: ExCoveralls],
+      preferred_cli_env: [
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.post": :test,
+        "coveralls.json": :test,
+        "coveralls.html": :test
+      ]
     ]
   end
 
@@ -46,7 +54,8 @@ defmodule BlogApi.MixProject do
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
       {:argon2_elixir, "~> 2.0"},
       {:guardian, "~> 2.1"},
-      {:sobelow, "~> 0.8", only: :dev}
+      {:sobelow, "~> 0.8", only: :dev},
+      {:excoveralls, "~> 0.13.4", only: :test}
     ]
   end
 

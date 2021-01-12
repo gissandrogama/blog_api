@@ -30,3 +30,5 @@ blog_api-*.tar
 # this depending on your deployment strategy.
 /priv/static/
 
+.DS_Store
+

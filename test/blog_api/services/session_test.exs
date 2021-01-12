@@ -1,21 +1,52 @@
 defmodule BlogApi.Users.Services.SessionTest do
   use BlogApi.DataCase
 
-  alias BlogApi.{Services.Session, UserFixture, Users}
+  alias BlogApi.{Services.Session, UserFixture}
 
-  test "authenticate/2 should return user" do
-    user = UserFixture.user_fixture(%{email: "teste@email.com", password: "123123"})
-    {:ok, user_authenticate} = Session.authenticate("teste@email.com", "123123")
-    assert "teste@email.com" == user_authenticate.email
-  end
+  describe "authenticate/1" do
+    test "should return user" do
+      UserFixture.user_fixture(%{email: "teste@email.com", password: "123123"})
 
-  test "authenticate/2 should return not_found" do
-    result = Session.authenticate("some123@email.com", "some password_hash")
-    assert {:error, :not_found} == result
-  end
+      {:ok, user_authenticate} =
+        Session.authenticate(%{"email" => "teste@email.com", "password" => "123123"})
 
-  test "authenticate/2 unauthorized password invalid" do
-    user_fixture()
-    assert {:error, :unauthorized} == Session.authenticate("some@email.com", "123456")
+      assert "teste@email.com" == user_authenticate.email
+    end
+
+    test "return error when email does not exist" do
+      UserFixture.user_fixture(%{email: "teste@email.com", password: "123123"})
+      result = Session.authenticate(%{"email" => "teste1231@email.com", "password" => "123123"})
+      assert {:error, "Campos inválidos"} == result
+    end
+
+    test "return error password invalid" do
+      UserFixture.user_fixture(%{email: "teste@email.com", password: "123123"})
+      result = Session.authenticate(%{"email" => "teste@email.com", "password" => "123456"})
+      assert {:error, "password inválido"} == result
+    end
+
+    test "return password error when only email is passed" do
+      UserFixture.user_fixture(%{email: "teste@email.com", password: "123123"})
+      result = Session.authenticate(%{"email" => "teste@email.com"})
+      assert {:error, "\"password\" is required"} == result
+    end
+
+    test "return email error when only password is passed" do
+      UserFixture.user_fixture(%{email: "teste@email.com", password: "123123"})
+      result = Session.authenticate(%{"password" => "123456"})
+      assert {:error, "\"email\" is required"} == result
+    end
+
+    test "return error when password was leaked" do
+      UserFixture.user_fixture(%{email: "teste@email.com", password: "123123"})
+      result = Session.authenticate(%{"email" => "teste@email.com", "password" => ""})
+      assert {:error, "\"password\" is not allowed to be empty"} == result
+    end
+
+    test "return error when email was leaked" do
+      UserFixture.user_fixture(%{email: "teste@email.com", password: "123123"})
+      result = Session.authenticate(%{"email" => "", "password" => "123123"})
+      assert {:error, "\"email\" is not allowed to be empty"} == result
+    end
   end
 end
