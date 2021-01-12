@@ -45,7 +45,8 @@ defmodule BlogApi.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
       {:argon2_elixir, "~> 2.0"},
-      {:guardian, "~> 2.1"}
+      {:guardian, "~> 2.1"},
+      {:sobelow, "~> 0.8", only: :dev}
     ]
   end
 
