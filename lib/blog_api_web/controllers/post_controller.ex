@@ -65,10 +65,17 @@ defmodule BlogApiWeb.PostController do
   end
 
   def delete(conn, %{"id" => id}) do
+    user = Guardian.Plug.current_resource(conn)
     post = Posts.get_post!(id)
 
-    with {:ok, %Post{}} <- Posts.delete_post(post) do
-      send_resp(conn, :no_content, "")
+    if user.id == post.user_id do
+      with {:ok, %Post{}} <- Posts.delete_post(post) do
+        send_resp(conn, :no_content, "")
+      end
+    else
+      conn
+      |> put_status(:unauthorized)
+      |> json(%{message: "Usuário não uatorizado"})
     end
   end
 end
