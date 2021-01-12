@@ -3,10 +3,7 @@ defmodule BlogApiWeb.PostControllerTest do
 
   import BlogApiWeb.Auth.Guardian
 
-  alias BlogApi.Posts
-  alias BlogApi.Posts.Post
-  alias BlogApi.Users
-  alias BlogApi.UserFixture
+  alias BlogApi.{Posts, Posts.Post, UserFixture, Users}
 
   @create_attrs %{
     content: "some content",

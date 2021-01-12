@@ -27,8 +27,16 @@ defmodule BlogApiWeb.UserController do
   end
 
   def show(conn, %{"id" => id}) do
-    user = Users.get_user!(id)
-    render(conn, "show.json", user: user)
+    Users.get_user!(id)
+    |> case do
+      %User{} = user ->
+        render(conn, "show.json", user: user)
+
+      {status, message} ->
+        conn
+        |> put_status(status)
+        |> json(%{message: message})
+    end
   end
 
   def update(conn, %{"id" => id, "user" => user_params}) do

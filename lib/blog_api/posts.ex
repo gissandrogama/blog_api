@@ -43,7 +43,17 @@ defmodule BlogApi.Posts do
       ** (Ecto.NoResultsError)
 
   """
-  def get_post!(id), do: Repo.get!(Post, id)
+  def get_post!(id) do
+    Repo.get(Post, id)
+    |> case do
+      nil ->
+        {:not_found, "Post não existe"}
+
+      post ->
+        post
+        |> BlogApi.Repo.preload(:user)
+    end
+  end
 
   @doc """
   Creates a post.
