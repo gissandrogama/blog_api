@@ -1,5 +1,9 @@
 # BlogApi
 
+[![Build Status](https://travis-ci.com/gissandrogama/blog_api.svg?branch=main)](https://travis-ci.com/gissandrogama/blog_api)
+
+[![codecov](https://codecov.io/gh/gissandrogama/blog_api/branch/main/graph/badge.svg?token=VDUSJHDI4A)](https://codecov.io/gh/gissandrogama/blog_api)
+
 To start your Phoenix server:
 
   * Install dependencies with `mix deps.get`
