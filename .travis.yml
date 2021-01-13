@@ -24,6 +24,6 @@ after_success:
 deploy:
   skip_cleanup: true
   provider: script
-  script: bash ./depoy.sh
+  script: bash ./deploy.sh
   on:
     branch: main
