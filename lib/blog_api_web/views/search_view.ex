@@ -1,21 +1,21 @@
 defmodule BlogApiWeb.SearchView do
   use BlogApiWeb, :view
-  alias BlogApiWeb.PostView
+  alias BlogApiWeb.SearchView
 
-  def render("show.json", %{posts: posts}) do
-    render_many(posts, PostView, "post.json")
+  def render("show.json", %{searchs: searchs}) do
+    render_many(searchs, SearchView, "search.json")
   end
 
-  def render("post.json", %{post: post}) do
+  def render("search.json", %{search: search}) do
     %{
-      Id: post.id,
-      title: post.title,
-      content: post.content,
+      id: search.id,
+      title: search.title,
+      content: search.content,
       user: %{
-        id: post.user.id,
-        displayName: post.user.display_name,
-        email: post.user.email,
-        image: post.user.image
+        id: search.user.id,
+        displayName: search.user.display_name,
+        email: search.user.email,
+        image: search.user.image
       }
     }
   end
