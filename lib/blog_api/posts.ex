@@ -21,14 +21,6 @@ defmodule BlogApi.Posts do
     Repo.all(Post)
   end
 
-  def list_search(params) do
-    search_term = get_in(params, ["q"])
-
-    Post
-    |> Post.search(search_term)
-    |> Repo.all()
-  end
-
   @doc """
   Gets a single post.
 
