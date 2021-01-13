@@ -1,12 +1,12 @@
 defmodule BlogApiWeb.SearchController do
   use BlogApiWeb, :controller
 
-  alias BlogApi.Posts
+  alias BlogApi.Services.Search
 
   action_fallback BlogApiWeb.FallbackController
 
-  def show(conn, %{"serach" => params}) do
-    searchs = Posts.list_search(params) |> BlogApi.Repo.preload(:user)
+  def show(conn, params) do
+    searchs = Search.list_search(params)
     render(conn, "show.json", searchs: searchs)
   end
 end
