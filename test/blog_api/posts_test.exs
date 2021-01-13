@@ -1,6 +1,8 @@
 defmodule BlogApi.PostsTest do
   use BlogApi.DataCase
 
+  import BlogApi.PostFixture
+
   alias BlogApi.Posts
 
   describe "posts" do
@@ -10,15 +12,6 @@ defmodule BlogApi.PostsTest do
     @update_attrs %{content: "some updated content", title: "some updated title"}
     @invalid_attrs %{content: nil, title: nil}
 
-    def post_fixture(attrs \\ %{}) do
-      {:ok, post} =
-        attrs
-        |> Enum.into(@valid_attrs)
-        |> Posts.create_post()
-
-      post
-    end
-
     test "list_posts/0 returns all posts" do
       post = post_fixture()
       assert Posts.list_posts() == [post]
@@ -26,7 +19,7 @@ defmodule BlogApi.PostsTest do
 
     test "get_post!/1 returns the post with given id" do
       post = post_fixture()
-      assert Posts.get_post!(post.id) == post
+      assert Posts.get_post!(post.id).title == post.title
     end
 
     test "create_post/1 with valid data creates a post" do
@@ -50,13 +43,13 @@ defmodule BlogApi.PostsTest do
     test "update_post/2 with invalid data returns error changeset" do
       post = post_fixture()
       assert {:error, %Ecto.Changeset{}} = Posts.update_post(post, @invalid_attrs)
-      assert post == Posts.get_post!(post.id)
+      assert post.id == Posts.get_post!(post.id).id
     end
 
     test "delete_post/1 deletes the post" do
       post = post_fixture()
       assert {:ok, %Post{}} = Posts.delete_post(post)
-      assert_raise Ecto.NoResultsError, fn -> Posts.get_post!(post.id) end
+      assert {:not_found, "Post não existe"} = Posts.get_post!(post.id)
     end
 
     test "change_post/1 returns a post changeset" do

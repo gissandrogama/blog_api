@@ -70,7 +70,7 @@ defmodule BlogApiWeb.PostController do
         else
           conn
           |> put_status(:unauthorized)
-          |> json(%{message: "Usuário não uatorizado"})
+          |> json(%{message: "Usuário não autorizado"})
         end
 
       {status, message} ->
@@ -91,7 +91,7 @@ defmodule BlogApiWeb.PostController do
     else
       conn
       |> put_status(:unauthorized)
-      |> json(%{message: "Usuário não uatorizado"})
+      |> json(%{message: "Usuário não autorizado"})
     end
   end
 end

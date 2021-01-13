@@ -9,7 +9,3 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
-
-# BlogApi.Users.create_user %{ display_name: "some displayName", email: "some@", image: "some image", password: "some password_hash" }
-
-user = BlogApi.Users.create_user(%{display_name: nil, email: nil, image: nil, password: nil})
