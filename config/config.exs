@@ -30,7 +30,7 @@ config :phoenix, :json_library, Jason
 # config guardian
 config :blog_api, BlogApiWeb.Auth.Guardian,
   issuer: "blog_api",
-  secret_key: System.get_env("GUARDIAN_SECRET")
+  secret_key: System.get_env("GUARDIAN_SECRET") | "1321231"
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
