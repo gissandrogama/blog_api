@@ -121,7 +121,7 @@ defmodule BlogApi.Posts do
     Post.changeset(post, attrs)
   end
 
-  defp error_messages({:error, changeset}) when changeset.valid? == false do
+  defp error_messages({:error, changeset}) do
     changeset = changeset.errors
 
     case changeset do
