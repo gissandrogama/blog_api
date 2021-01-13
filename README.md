@@ -63,7 +63,7 @@ caso queira usar o insomnia, segue um arquivo já com as rotas para ultilizar
 [arquivo insomnia](./Insomnia-blog_api.json)
 
 # Deploy
-A aplicação está no gigalixir no endereço <https//.gigalixirapp.com/>. Um dos motivos de escolher o gigalixir é que não tem sleeps da aplicação no plano free.
+A aplicação está no gigalixir no endereço <https://blog-api.gigalixirapp.com/>. Um dos motivos de escolher o gigalixir é que não tem sleeps da aplicação no plano free.
 
 # Gerar documentação da aplicação
 
