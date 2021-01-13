@@ -113,7 +113,7 @@ defmodule BlogApi.Users do
     User.changeset(user, attrs)
   end
 
-  def error_messages({:error, changeset}) when changeset.valid? == false do
+  defp error_messages({:error, changeset}) do
     changeset = changeset.errors
 
     case changeset do
@@ -148,5 +148,5 @@ defmodule BlogApi.Users do
     end
   end
 
-  def error_messages(changeset), do: changeset
+  defp error_messages(changeset), do: changeset
 end
