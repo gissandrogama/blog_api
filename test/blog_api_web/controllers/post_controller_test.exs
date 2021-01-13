@@ -3,30 +3,21 @@ defmodule BlogApiWeb.PostControllerTest do
 
   import BlogApiWeb.Auth.Guardian
 
-  alias BlogApi.{Posts, Posts.Post, UserFixture, Users}
+  alias BlogApi.{PostFixture, UserFixture}
 
   @create_attrs %{
     content: "some content",
     title: "some title"
   }
+
   @update_attrs %{
     content: "some updated content",
     title: "some updated title"
   }
   @invalid_attrs %{content: nil, title: nil}
 
-  def fixture(:post) do
-    {:ok, post} = Posts.create_post(@create_attrs)
-    post
-  end
-
-  def user_fixture(:user) do
-    {:ok, user} = Users.create_user(UserFixture.valid_user())
-    user
-  end
-
   setup %{conn: conn} do
-    user = user_fixture(:user)
+    user = UserFixture.user_fixture()
     {:ok, token, _} = encode_and_sign(user, %{}, token_type: :access)
 
     conn =
@@ -47,60 +38,48 @@ defmodule BlogApiWeb.PostControllerTest do
   describe "create post" do
     test "renders post when data is valid", %{conn: conn} do
       conn = post(conn, Routes.post_path(conn, :create), post: @create_attrs)
-      assert %{"id" => id} = json_response(conn, 201)
 
-      conn = get(conn, Routes.post_path(conn, :show, id))
-
-      assert %{
-               "id" => id,
-               "content" => "some content",
-               "title" => "some title"
-             } = json_response(conn, 200)
+      assert %{"UserId" => _, "title" => "some title", "content" => "some content"} =
+               json_response(conn, 201)
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
       conn = post(conn, Routes.post_path(conn, :create), post: @invalid_attrs)
-      assert json_response(conn, 422)["errors"] != %{}
+      assert %{"message" => " \"title\" and \"content\" is required"} = json_response(conn, 400)
     end
   end
 
   describe "update post" do
-    setup [:create_post]
-
-    test "renders post when data is valid", %{conn: conn, post: %Post{id: id} = post} do
+    test "error when user did not create the post", %{conn: conn} do
+      post = PostFixture.post_fixture()
       conn = put(conn, Routes.post_path(conn, :update, post), post: @update_attrs)
-      assert %{"id" => ^id} = json_response(conn, 200)["data"]
+      assert %{"message" => "Usuário não autorizado"} = json_response(conn, 401)
 
-      conn = get(conn, Routes.post_path(conn, :show, id))
+      conn = get(conn, Routes.post_path(conn, :show, post.id))
 
       assert %{
-               "id" => id,
-               "content" => "some updated content",
-               "title" => "some updated title"
-             } = json_response(conn, 200)["data"]
+               "content" => "some content",
+               "title" => "some title",
+               "id" => _id,
+               "user" => _
+             } = json_response(conn, 200)
     end
 
-    test "renders errors when data is invalid", %{conn: conn, post: post} do
+    test "renders errors when data is invalid", %{conn: conn} do
+      post = PostFixture.post_fixture()
       conn = put(conn, Routes.post_path(conn, :update, post), post: @invalid_attrs)
-      assert json_response(conn, 422)["errors"] != %{}
+      assert %{"message" => "Usuário não autorizado"} = json_response(conn, 401)
     end
   end
 
   describe "delete post" do
-    setup [:create_post]
-
-    test "deletes chosen post", %{conn: conn, post: post} do
+    test "deletes chosen post", %{conn: conn} do
+      post = PostFixture.post_fixture()
       conn = delete(conn, Routes.post_path(conn, :delete, post))
-      assert response(conn, 204)
+      assert response(conn, 401)
 
-      assert_error_sent 404, fn ->
-        get(conn, Routes.post_path(conn, :show, post))
-      end
+      # conn = get(conn, Routes.post_path(conn, :show, post))
+      # assert "" = json_response(conn, 404)
     end
-  end
-
-  defp create_post(_) do
-    post = fixture(:post)
-    %{post: post}
   end
 end

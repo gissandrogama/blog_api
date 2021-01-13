@@ -3,15 +3,10 @@ defmodule BlogApiWeb.SessionControllerTest do
 
   import BlogApiWeb.Auth.Guardian
 
-  alias BlogApi.{UserFixture, Users}
-
-  def fixture(:user) do
-    {:ok, user} = Users.create_user(UserFixture.valid_user())
-    user
-  end
+  alias BlogApi.UserFixture
 
   setup %{conn: conn} do
-    user = fixture(:user)
+    user = UserFixture.user_fixture(%{email: "certo@email.com"})
     {:ok, token, _} = encode_and_sign(user, %{}, token_type: :access)
 
     conn =
@@ -27,8 +22,8 @@ defmodule BlogApiWeb.SessionControllerTest do
       conn =
         conn
         |> post(Routes.session_path(conn, :create), %{
-          email: "some@email.com",
-          password: "some password_hash"
+          email: "certo@email.com",
+          password: "123456"
         })
 
       assert %{"token" => _} = json_response(conn, 200)
@@ -42,7 +37,7 @@ defmodule BlogApiWeb.SessionControllerTest do
           password: "123456"
         })
 
-      assert json_response(conn, 400) == %{"message" => "unauthorized"}
+      assert json_response(conn, 400) == %{"message" => "Campos inválidos"}
     end
   end
 end

@@ -24,7 +24,7 @@ defmodule BlogApiWeb.PostView do
 
   def render("posts.json", %{post: post}) do
     %{
-      Id: post.id,
+      id: post.id,
       title: post.title,
       content: post.content,
       user: %{
