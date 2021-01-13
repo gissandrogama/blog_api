@@ -4,28 +4,6 @@
 
 [![codecov](https://codecov.io/gh/gissandrogama/blog_api/branch/main/graph/badge.svg?token=VDUSJHDI4A)](https://codecov.io/gh/gissandrogama/blog_api)
 
-To start your Phoenix server:
-
-  * Install dependencies with `mix deps.get`
-  * Create and migrate your database with `mix ecto.setup`
-  * Start Phoenix endpoint with `mix phx.server`
-
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
-
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
-
-## Learn more
-
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
-
-  ![logo-trybe](https://yt3.ggpht.com/ytc/AAUvwniKOMGxGD02USyXcic0VZEBJxLsGJNgD_20IrCNPA=s900-c-k-c0x00ffffff-no-rj)
-
-# BlogApi
-
 Desafio **bac-kend** que o objetivo é criar uma API API de um CRUD de posts de blog. Proposto pela [Trybe](https://www.betrybe.com/)
 
 # Informacoes Tecnicas
